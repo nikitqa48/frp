@@ -1,6 +1,6 @@
 from django.contrib import admin
-from project.models import *
+from .models import *
 # Register your models here
 @admin.register(Profile)
 class AdminProfile(admin.ModelAdmin):
-    list_display = ['username', 'email', 'phone', 'organisation', 'last_name', 'first_name']
+    list_display = ['phone', 'organisation', 'user']

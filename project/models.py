@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
-
 from django.utils import timezone
 
 
@@ -124,21 +123,11 @@ class Using(models.Model):
         verbose_name_plural = 'Использование средств'
  
 
-class Profile(User):
-    organisation = models.OneToOneField(Organisation, on_delete=models.CASCADE, null=True)
-    phone = models.CharField('Телефон', max_length=20)
-
-    class Meta:
-        verbose_name = 'Профиль'
-        verbose_name_plural = 'Профили'
-
-    def create_organisation(self):
-        self.organisation.objects.create(*kwargs)
 
 
 
 class Project(models.Model):
-    user = models.OneToOneField(Profile, on_delete=models.CASCADE, default=0, verbose_name='Профиль')
+    # user = models.OneToOneField(Profile, on_delete=models.CASCADE, default=0, verbose_name='Профиль')
     name = models.TextField('Название проекта')
     program = models.CharField('Программа финансовой поддержки', max_length=300)
     required_funding = models.CharField('Требуемый объем финансирования', max_length=50)
