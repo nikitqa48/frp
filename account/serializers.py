@@ -21,6 +21,7 @@ class OrganisationSerializers(serializers.ModelSerializer):
                   'address',
                   ]
 
+
 class UserSerializers(UserCreateSerializer):
     class Meta:
         model = User
@@ -35,12 +36,28 @@ class ProfileSerializers(serializers.ModelSerializer):
         fields = ['user', 'organisation', 'phone']
 
     def create(self, validated_data):
-        user_data = validated_data['user']
+        data = validated_data
+        user_data = data['user']
+        organisation_data = data['organisation']
+        print(organisation_data['address'])
+        organisation = Organisation.objects.create(full_name=organisation_data['full_name'],
+                                                   short_name=organisation_data['short_name'],
+                                                   ogrn=organisation_data['ogrn'],
+                                                   # inn=organisation_data['inn'],
+                                                   kpp=organisation_data['kpp'],
+                                                   data_registration=organisation_data['data_registration'],
+                                                   chef=organisation_data['chef'],
+                                                   contact=organisation_data['contact'],
+                                                   target=organisation_data['target']
+                                                   )
+        user = User.objects.create(first_name=user_data['first_name'],
+                                   last_name=user_data['last_name'],
+                                   email=user_data['email'],
+                                   username=user_data['username'],
+                                   )
+        profile = Profile.objects.create(user=user, organisation=organisation,
+                                         phone=validated_data['phone'],
 
-        print(user_data)
-        organisation_data = validated_data['organisation']
-        organisation = Organisation.objects.create(full_name=organisation_data)
-        user = User.objects.create(first_name=user_data)
-        profile = Profile.objects.create(user=user, organisation=organisation, phone=validated_data['phone'])
+                                         )
         return profile
 
